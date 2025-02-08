@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Admin/Helper - Mentari RP</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: url('images (19).jpeg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: white;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        ::placeholder {
+            color: white;
+        }
+
+        button {
+            background: #6b5b95;
+            color: white;
+            padding: 10px;
+            border: none;
+            width: 100%;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #564875;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Open Recruitment Admin/Helper</h2>
+        <form id="adminForm">
+            <h3>📌 STEAM VERIFIKASI</h3>
+            <input type="text" id="steam_hex" placeholder="Masukkan Steam Hex" required>
+
+            <h3>📌 PERSONAL IC</h3>
+            <input type="text" id="nama_ic" placeholder="Nama IC" required>
+
+            <h3>📌 PERSONAL OOC</h3>
+            <input type="text" id="nama_ooc" placeholder="Nama OOC" required>
+            <input type="number" id="umur_ooc" placeholder="Umur OOC" required>
+
+            <button type="button" onclick="cekVerifikasi()">Cek Verifikasi</button>
+        </form>
+    </div>
+
+    <script>
+        function cekVerifikasi() {
+            const steam_hex = document.getElementById("steam_hex").value;
+            if (!steam_hex) {
+                alert("Masukkan Steam Hex terlebih dahulu!");
+                return;
+            }
+
+            fetch(`/verifikasi?steam_hex=${steam_hex}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.terverifikasi) {
+                        alert("Steam Hex terverifikasi! Silakan lanjutkan pendaftaran.");
+                        document.getElementById("adminForm").action = "/submit";
+                        document.getElementById("adminForm").submit();
+                    } else {
+                        alert("Steam Hex belum diverifikasi oleh admin.");
+                    }
+                })
+                .catch(error => alert("Gagal memverifikasi Steam Hex: " + error));
+        }
+    </script>
+
+</body>
+</html>
